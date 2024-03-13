@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public float chanceOfSuccess;
     public float chanceOfFailure;
-    
+    public float TotalClicks;
+    public TextMeshProUGUI TotalClicksStringtext;
     public TextMeshProUGUI chanceStringtext;
     public float timesClicked;
     public TextMeshProUGUI TimesClickedStringtext;
@@ -17,12 +18,13 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI DeathMessage;
     public GameObject Panellll;
     public GameObject Panellll2;
-    public float LowestPercent =100;
+    public float LowestPercent =100f;
     public TextMeshProUGUI LowestPercentText;
     // Start is called before the first frame update
     void Start()
     {
         TimesClickedStringtext.text = timesClicked.ToString();
+       
         chanceOfSuccess = 100f;
         MostTimeClickedStringtext.text = MostTimeClicked.ToString();
     }
@@ -30,8 +32,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       chanceStringtext.text = chanceOfSuccess.ToString();
+        TotalClicksStringtext.text = TotalClicks.ToString();
+        chanceStringtext.text = chanceOfSuccess.ToString();
         LowestPercentText.text = LowestPercent.ToString();
+        
         if (chanceOfSuccess >=75)
         {
             chanceStringtext.color = new Color(0, 250, 0);
@@ -58,7 +62,9 @@ public class GameManager : MonoBehaviour
         {
             if(chanceOfSuccess < LowestPercent)
             {
+                Debug.Log("change lowest");
                 LowestPercent = chanceOfSuccess;
+                PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
             }
             chanceOfSuccess = Random.Range(0f, chanceOfSuccess);
             
@@ -112,6 +118,7 @@ public class GameManager : MonoBehaviour
     }
     public void ButtonPressed()
     {
+        TotalClicks++;
         timesClicked++;
         if(MostTimeClicked <= timesClicked)
         {
@@ -121,5 +128,20 @@ public class GameManager : MonoBehaviour
         }
         TimesClickedStringtext.text = timesClicked.ToString();
 
+    }
+    private void OnApplicationFocus(bool focus)
+    {
+        if (focus)
+        {
+             TotalClicks =  PlayerPrefs.GetFloat("TotalClicks");
+            MostTimeClicked = PlayerPrefs.GetFloat("MostTimeClicked");
+            //LowestPercent = PlayerPrefs.GetFloat("LowestPercent");
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("TotalClicks", TotalClicks);
+            PlayerPrefs.SetFloat("MostTimeClicked", MostTimeClicked);
+            PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
+        }
     }
 }
