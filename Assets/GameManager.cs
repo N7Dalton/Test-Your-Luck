@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject Panellll2;
     public float LowestPercent =100f;
     public TextMeshProUGUI LowestPercentText;
+    public AppleAchievements IOSAchievements;
     // Start is called before the first frame update
 
     private void Awake()
@@ -75,6 +76,10 @@ public class GameManager : MonoBehaviour
             }
             chanceOfSuccess = Random.Range(0f, chanceOfSuccess);
             
+        }
+        if (IOSAchievements.HasRiskTaker == false && TotalClicks > 0)
+        {
+            IOSAchievements.GetRiskTaker();
         }
     }
     public void Die()

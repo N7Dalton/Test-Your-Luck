@@ -6,6 +6,7 @@ using UnityEngine.SocialPlatforms;
 public class AppleAchievements : MonoBehaviour
 {
     public GameManager gameManager;
+    public bool HasRiskTaker;
     public string IOSAchievement;
     public string AndroidAchievement;
     private string achievementID;
@@ -31,17 +32,14 @@ public class AppleAchievements : MonoBehaviour
     }
         private void Update()
     {
-        if(gameManager.TotalClicks > 0)
-        {
-            GetRiskTaker();
-        }
+       
     }
-    void GetRiskTaker()
+    public void GetRiskTaker()
     {
         
-        Social.ReportProgress(achievementID, 100.0,  result =>
+        Social.ReportProgress(achievementID, 100.0,  HasRiskTaker =>
         {
-            if (result)
+            if (HasRiskTaker)
                 Debug.Log("Successfully reported progress");
             else
                 Debug.Log("Failed to report progress");
