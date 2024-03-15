@@ -21,6 +21,13 @@ public class GameManager : MonoBehaviour
     public float LowestPercent =100f;
     public TextMeshProUGUI LowestPercentText;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        TotalClicks = PlayerPrefs.GetFloat("TotalClicks");
+        MostTimeClicked = PlayerPrefs.GetFloat("MostTimeClicked");
+        LowestPercent = PlayerPrefs.GetFloat("LowestPercent");
+    }
     void Start()
     {
         TimesClickedStringtext.text = timesClicked.ToString();
@@ -62,7 +69,7 @@ public class GameManager : MonoBehaviour
         {
             if(chanceOfSuccess < LowestPercent)
             {
-                Debug.Log("change lowest");
+                
                 LowestPercent = chanceOfSuccess;
                 PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
             }
@@ -75,7 +82,7 @@ public class GameManager : MonoBehaviour
         chanceOfSuccess = 100f;
         Panellll.SetActive(true);
         Panellll2.SetActive(false);
-        timesClicked = 0f;
+        timesClicked = -1f;
         float random = Random.Range(0, 7);
         if(random == 0)
         {
@@ -143,5 +150,11 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetFloat("MostTimeClicked", MostTimeClicked);
             PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
         }
+    }
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetFloat("TotalClicks", TotalClicks);
+        PlayerPrefs.SetFloat("MostTimeClicked", MostTimeClicked);
+        PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
     }
 }
