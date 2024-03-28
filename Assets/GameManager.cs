@@ -27,12 +27,12 @@ public class GameManager : MonoBehaviour
     {
         TotalClicks = PlayerPrefs.GetFloat("TotalClicks");
         MostTimeClicked = PlayerPrefs.GetFloat("MostTimeClicked");
-        LowestPercent = PlayerPrefs.GetFloat("LowestPercent");
+        LowestPercent = PlayerPrefs.GetFloat("LowestPercent", 100f);
     }
     void Start()
     {
         TimesClickedStringtext.text = timesClicked.ToString();
-       
+        PlayerPrefs.SetFloat("LowestPercent", 100f);
         chanceOfSuccess = 100f;
         MostTimeClickedStringtext.text = MostTimeClicked.ToString();
     }
@@ -68,11 +68,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if(chanceOfSuccess < LowestPercent)
+            Debug.Log("Change chance of success");
+            if (chanceOfSuccess < LowestPercent)
             {
-                
+                Debug.Log("Change lowest percent");
                 LowestPercent = chanceOfSuccess;
-                PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
+               
             }
             chanceOfSuccess = Random.Range(0f, chanceOfSuccess);
             
@@ -124,10 +125,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    public void TryAgain()
-    {
-        SceneManager.LoadScene("Game");
-    }
+   
     public void ButtonPressed()
     {
         TotalClicks++;
@@ -141,13 +139,14 @@ public class GameManager : MonoBehaviour
         TimesClickedStringtext.text = timesClicked.ToString();
 
     }
+    /*
     private void OnApplicationFocus(bool focus)
     {
         if (focus)
         {
-             TotalClicks =  PlayerPrefs.GetFloat("TotalClicks");
+            TotalClicks =  PlayerPrefs.GetFloat("TotalClicks");
             MostTimeClicked = PlayerPrefs.GetFloat("MostTimeClicked");
-            //LowestPercent = PlayerPrefs.GetFloat("LowestPercent");
+            LowestPercent = PlayerPrefs.GetFloat("LowestPercent", 100f);
         }
         else
         {
@@ -161,5 +160,16 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("TotalClicks", TotalClicks);
         PlayerPrefs.SetFloat("MostTimeClicked", MostTimeClicked);
         PlayerPrefs.SetFloat("LowestPercent", LowestPercent);
+    }
+    */
+    public void ResetAllStats()
+    {
+        PlayerPrefs.SetFloat("TotalClicks", 0);
+        PlayerPrefs.SetFloat("MostTimeClicked", 0);
+        PlayerPrefs.SetFloat("LowestPercent", 100);
+        Debug.Log("RESET ALL STATS");
+        TotalClicks = PlayerPrefs.GetFloat("TotalClicks");
+        MostTimeClicked = PlayerPrefs.GetFloat("MostTimeClicked");
+        LowestPercent = PlayerPrefs.GetFloat("LowestPercent", 100f);
     }
 }
